@@ -2,9 +2,8 @@ import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 import datetime
 import os
+from config import config
 
-
-CERTIFICATE_LOCATION=os.environ['BUDGET_TRACKER_CERTIFICATE']
 BUDGET_SHEET="Budget"
 EXPENSE_TEMPLATE="ExpenseTemplate"
 
@@ -18,7 +17,7 @@ class Spreadsheet(object):
         """
         self._scope = ['https://spreadsheets.google.com/feeds',
                        'https://www.googleapis.com/auth/drive']
-        self._creds = ServiceAccountCredentials.from_json_keyfile_name(CERTIFICATE_LOCATION, self._scope)
+        self._creds = ServiceAccountCredentials.from_json_keyfile_name(config['default'].CERTIFICATE_LOCATION, self._scope)
         self._client = gspread.authorize(self._creds)
         self._spreadsheet = self._client.open("Budget")
         self._latest_expense_sheet = self._get_latest_expense_sheet()
