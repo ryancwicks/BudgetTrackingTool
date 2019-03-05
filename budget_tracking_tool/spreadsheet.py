@@ -2,7 +2,7 @@ import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 import datetime
 import os
-from config import config
+from .config import config
 
 BUDGET_SHEET="Budget"
 EXPENSE_TEMPLATE="ExpenseTemplate"
@@ -20,9 +20,8 @@ class Spreadsheet(object):
         self._creds = ServiceAccountCredentials.from_json_keyfile_name(config['default'].CERTIFICATE_LOCATION, self._scope)
         self._client = gspread.authorize(self._creds)
         self._spreadsheet = self._client.open("Budget")
-        self._latest_expense_sheet = self._get_latest_expense_sheet()
 
-    def _get_budget_summary(self):
+    def _get_budget_total(self):
         """
         Retrieve the budget summary dictionary
         """
@@ -30,7 +29,23 @@ class Spreadsheet(object):
         records = sheet.get_all_records()[0]
         return records
 
-    budget_summary = property(fget=_get_budget_summary)
+    def _get_budget_current(self):
+        """
+        Get the current total budget and expenses and calculate the current budget remaining.
+        """
+        total_budget = self._get_budget_total()
+        current_month_expenses = self._get_latest_expense_sheet().get_all_records()
+
+        for item in current_month_expenses:
+            try:
+                total_budget[item["Account"]] -= item["Amount"]
+            except:
+                print ("Mismatched accounts")
+
+        return total_budget
+
+    budget_total = property(fget=_get_budget_total)
+    budget_current = property(fget=_get_budget_current)
 
     def _get_latest_expense_sheet(self):
         """
@@ -58,15 +73,24 @@ class Spreadsheet(object):
 
     def add_expense(self, user, account, amount, notes=None):
         """
+        Add an expense to the sheet.
         """
+        budget_sheet = self.budget_total
+        if not account in budget_sheet.keys():
+            raise RuntimeError ("Account {} is not part of the budget.".format(account))
+        expense_sheet = self._get_latest_expense_sheet()
         now = str(datetime.datetime.now())
         row = [str(now), str(user), str(account), amount, "" if not notes else notes]
-        self._latest_expense_sheet.append_row(row)
+        expense_sheet.append_row(row)
 
 
 
 if __name__=="__main__":
     budget_spreadsheet = Spreadsheet()
 
-    budget_spreadsheet.add_expense ("Ryan", "Animals", 50.12)
+    #budget_spreadsheet.add_expense ("Ryan", "Groceries", 50.12)
+    #budget_spreadsheet.add_expense ("Marja", "Groceries", 100.12)
+    #budget_spreadsheet.add_expense ("Marja", "Clothes", 49.99, "Tessa's coat.")
+
+    print(budget_spreadsheet.budget_current)
 

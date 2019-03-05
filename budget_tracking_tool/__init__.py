@@ -26,5 +26,7 @@ def create_application(config_name):
     #attach routes and error pages here
     from .expense_entry import expense_entry as expense_entry_blueprint
     app.register_blueprint(expense_entry_blueprint, url_prefix="/expense_entry")
+    from .api import api as api_blueprint
+    app.register_blueprint(api_blueprint, url_prefix="/api/v1")
 
     return app

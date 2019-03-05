@@ -5,6 +5,33 @@
 
 {% block content %}
 
-Index of expense form.
+<h2>Current Amounts for {{ month_year }}</h2>
+<div id="expense_table_div">
+<table id="expense_table">
+    <tr>
+        <th>Account</th>
+        <th>Remaining ($)</th>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+    </tr>
+</table>
+</div>
 
+<div id="alert_field"></div>
+
+<h2>Expense Entry Form</h2>
+<div id="entry_form">
+    <div id="account_field">Account: 
+        <select id="account_select"> 
+            
+        </select>
+    </div>
+    <div id="amount_field">Cost: $<input id="cost" type="number" value="0.00" min="0" step="0.01"></div>
+    <div id="note_field">Notes: <input id="notes" type="text"></div>
+    <div id="submit_field"><input id="submit" type="button" value="Submit Expense"></div>
+</div>
+
+<script src="{{ url_for('static', filename='expense_form.js') }}"></script>
 {% endblock %}

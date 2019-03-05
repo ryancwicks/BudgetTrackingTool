@@ -1,0 +1,19 @@
+h1 h2 h3 {
+    color: green;
+}
+
+#expense_table {
+    width: 100%;
+}
+
+table, th, td {
+    border: 1px solid black;
+}
+
+#alert_field {
+    background-color: grey;
+    border-bottom-style: solid;
+    border-bottom-color: green;
+    border-bottom-width: 4px;
+    border-radius: 5px;
+}
