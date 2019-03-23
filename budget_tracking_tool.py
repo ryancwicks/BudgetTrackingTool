@@ -13,7 +13,7 @@ def main():
     url = 'http:/127.0.0.1:' + str(port)
     if not app.config['DEBUG']:
         threading.Timer (1.25, lambda: webbrowser.open_new(url) ).start()
-    app.run(host="0.0.0.0", port=port)
+    app.run(port=port)
 
 if __name__ == '__main__':
     main()
