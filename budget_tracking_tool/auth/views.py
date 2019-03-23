@@ -7,12 +7,10 @@ from ..models import User
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
-    print (form.validate_on_submit())
     if form.validate_on_submit():
         user = User(form.username.data)
         if user.authenticate_user(form.password.data):
             login_user(user, form.remember_me.data)
-            print ("Validating user {}".format(form.username.data))
             next = request.args.get('next')
             if next is None or not next.startswith('/'):
                 next = url_for('main_page')
@@ -25,4 +23,4 @@ def login():
 def logout():
     logout_user()
     flash('You have been logged out.')
-    return redirect(url_for('login'))
+    return redirect(url_for('auth.login'))

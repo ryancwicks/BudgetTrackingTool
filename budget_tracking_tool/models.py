@@ -3,10 +3,11 @@ from oauth2client.service_account import ServiceAccountCredentials
 from werkzeug.security import generate_password_hash, check_password_hash
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from flask import current_app
-from flask_login import UserMixin, login_manager
+from flask_login import UserMixin
 import datetime
 import os
 from .config import config
+from . import login_manager
 
 BUDGET_SHEET="Budget"
 EXPENSE_TEMPLATE="ExpenseTemplate"
@@ -95,7 +96,7 @@ class Budget(Spreadsheet):
         row = [str(now), str(user), str(account), amount, "" if not notes else notes]
         expense_sheet.append_row(row)
 
-class User(Spreadsheet):
+class User(Spreadsheet, UserMixin):
     """
     Spreadsheet interface to get user information and authenticate.
     """
@@ -109,21 +110,17 @@ class User(Spreadsheet):
         self._username = username
         table = self._spreadsheet.worksheet(self.USERS_TABLE).get_all_records()
         matching_users = list(filter(lambda person: person["User"]==self._username, table))
-        self.is_authenticated = False
-        self.is_anonymous = False
         if len(matching_users) == 0:
-            self.is_active = False
             self._password_hash = None
             return
         
-        self.is_active = True
         self._password_hash = matching_users[0]["Password"]
     
     def get_id(self):
         return self._username
         
     def _verify_password(self, password):
-        if not self.is_active:
+        if not self._password_hash:
             return False
         return check_password_hash(self._password_hash, password)
 
@@ -163,7 +160,7 @@ class User(Spreadsheet):
             return None
         return data['id']
 
-@login_manager.user_loaded_from_request
+@login_manager.user_loader
 def load_user(user_id):
     return User(user_id)
 

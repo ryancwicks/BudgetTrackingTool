@@ -6,6 +6,10 @@
 
 <header>
   <h1>Budget Tracking Tool</h1>
+  {% if current_user.is_authenticated %}
+  <a href="{{ url_for('auth.logout') }}">Logout</a>
+  {% else %}
+  {% endif %}
 </header>
 
 {% with messages = get_flashed_messages() %}

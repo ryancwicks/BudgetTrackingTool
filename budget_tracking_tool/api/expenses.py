@@ -1,8 +1,10 @@
 from flask import jsonify, request
+from flask_login import login_required
 from . import api
 from ..models import Budget
 
 @api.route("/add_expense/", methods=["POST"])
+@login_required
 def add_expense():
     """
     Add a budget expense.
