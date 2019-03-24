@@ -6,6 +6,7 @@ Flask
 Flask-HTTPAuth
 Flask-Login
 Flask-WTF
+flup
 gspread
 httplib2
 idna
