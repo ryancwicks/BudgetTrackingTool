@@ -6,6 +6,7 @@ from flask import current_app
 from flask_login import UserMixin
 import datetime
 import os
+import sys
 from .config import config
 from . import login_manager
 
@@ -32,7 +33,10 @@ class Budget(Spreadsheet):
     """
 
     def __init__(self):
-        super().__init__()
+        if sys.version_info > (3, 0, 0):
+            super().__init__()
+        else:
+            super(Budget, self).__init__()
 
     def _get_budget_total(self):
         """
@@ -106,7 +110,10 @@ class User(Spreadsheet, UserMixin):
         """
         Implements the Flask-Login methods.
         """
-        super().__init__()
+        if sys.version_info > (3, 0, 0):
+            super().__init__()
+        else:
+            super(User, self).__init__()
         self._username = username
         table = self._spreadsheet.worksheet(self.USERS_TABLE).get_all_records()
         matching_users = list(filter(lambda person: person["User"]==self._username, table))
