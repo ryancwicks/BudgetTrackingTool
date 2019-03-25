@@ -5,6 +5,9 @@ env_variables:
   BUDGET_TRACKER_SECRET_KEY: "bt_secret_key"
 
 handlers:
+- url: /static
+  static_dir: budget_tracking_tool/static
+
 - url: /.*
   secure: always
   redirect_http_response_code: 301

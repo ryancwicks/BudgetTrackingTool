@@ -18,6 +18,9 @@ cp requirements.txt $TEMP_DIRECTORY
 cp app.yaml $TEMP_DIRECTORY
 cp budget_tracking_tool.py $TEMP_DIRECTORY
 
+find $TEMP_DIRECTORY -type f -name '*.pyc' -exec rm -rf {} +
+find $TEMP_DIRECTORY -type d -name '__pycache__' -exec rm -rf {} +
+
 #Create a text file with the new environment variables to be loaded by the .bashrc on the server.
 echo 'export BUDGET_TRACKER_CERTIFICATE="$HOME/certificates/BudgetTracker-secret.json"' > $TEMP_DIRECTORY/budget_variables.sh
 echo "export BUDGET_TRACKER_SECRET_KEY='$BUDGET_TRACKER_SECRET_KEY'" >> $TEMP_DIRECTORY/budget_variables.sh
