@@ -23,7 +23,7 @@ echo 'export BUDGET_TRACKER_CERTIFICATE="$HOME/certificates/BudgetTracker-secret
 echo "export BUDGET_TRACKER_SECRET_KEY='$BUDGET_TRACKER_SECRET_KEY'" >> $TEMP_DIRECTORY/budget_variables.sh
 chmod 755 $TEMP_DIRECTORY/budget_variables.sh
 #For google app engine, adjust the variables in the yaml app file
-sed -i 's@bt_certificate@$HOME/certificates/BudgetTracker-secret.json@g' $TEMP_DIRECTORY/app.yaml
+sed -i 's@bt_certificate@certificates/BudgetTracker-secret.json@g' $TEMP_DIRECTORY/app.yaml
 sed -i 's@bt_secret_key@'"$BUDGET_TRACKER_SECRET_KEY"'@g' $TEMP_DIRECTORY/app.yaml
 
 cd $TEMP_DIRECTORY
