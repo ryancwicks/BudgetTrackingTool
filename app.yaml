@@ -1,0 +1,13 @@
+runtime: python37
+
+instance_class: B1
+
+env_variables:
+  BUDGET_TRACKER_CERTIFICATE: "bt_certificate" 
+  BUDGET_TRACKER_SECRET_KEY: "bt_secret_key"
+
+handlers:
+- url: /.*
+  secure: always
+  redirect_http_response_code: 301
+  script: auto

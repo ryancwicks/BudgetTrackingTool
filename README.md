@@ -15,4 +15,4 @@ There are a few environment variables you should set up on the server:
 
 * SECRET_KEY - The secret key used by it's dangerous for certificate signing of forms.
 * BUDGET_TRACKER_CERTIFICATE - The location of the google certificate for letting the site access google.
-* BUDGET_TRACKER_APP_CONFIG - Should be set to "Production".
+* BUDGET_TRACKER_APP_CONFIG - Should be set to "Production", or left unset
