@@ -97,7 +97,11 @@ class Budget(Spreadsheet):
             raise RuntimeError ("Account {} is not part of the budget.".format(account))
         expense_sheet = self._get_latest_expense_sheet()
         now = str(datetime.datetime.now())
-        row = [str(now), str(user), str(account), amount, "" if not notes else notes]
+        try:
+            amount_parsed = float(amount)
+        except ValueError:
+            amount_parsed = 0
+        row = [str(now), str(user), str(account), amount_parsed, "" if not notes else notes]
         expense_sheet.append_row(row)
 
 class User(Spreadsheet, UserMixin):

@@ -78,7 +78,7 @@ var ExpenseFormApp = (function() {
                 let account = document.createElement("td");
                 let amount = document.createElement("td");
                 account.innerHTML = key;
-                amount.innerHTML = response[key];
+                amount.innerHTML = response[key].toLocaleString('en');
                 let value = Number(response[key]);
                 if (value >= 0) {
                     amount.style="color:green";
@@ -118,7 +118,6 @@ var ExpenseFormApp = (function() {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify ({
-                    user: "None",
                     account: account,
                     amount: amount,
                     notes: notes
@@ -145,3 +144,6 @@ ExpenseForm.update_budget_table();
 
 var submit_button = document.getElementById("submit");
 submit_button.addEventListener("click", ExpenseForm.submit_expense);
+
+var amount_field = document.getElementById("cost");
+amount_field.addEventListener("focus", ()=>{amount_field.value = "";});
